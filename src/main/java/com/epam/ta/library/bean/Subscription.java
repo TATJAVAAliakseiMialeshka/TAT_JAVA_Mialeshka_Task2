@@ -1,9 +1,12 @@
 package com.epam.ta.library.bean;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class Subscription {
+public class Subscription implements Serializable{
 
+	private static final long serialVersionUID = -5652380306813206701L;
+	
 	private Integer id;
 	private Integer userId;
 	private Integer bookId;

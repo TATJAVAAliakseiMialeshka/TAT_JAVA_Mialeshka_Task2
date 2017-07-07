@@ -1,10 +1,13 @@
 package com.epam.ta.library.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Book {
+public class Book implements Serializable{
 
+	private static final long serialVersionUID = -8377263953465540921L;
+	
 	private Integer id;
 	private Integer year;
 	private Integer quantity;

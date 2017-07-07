@@ -1,10 +1,13 @@
 package com.epam.ta.library.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User implements Serializable{
 
+	private static final long serialVersionUID = 2909440320052723746L;
+	
 	private Integer id;
 	private String name;
 	private String password;
