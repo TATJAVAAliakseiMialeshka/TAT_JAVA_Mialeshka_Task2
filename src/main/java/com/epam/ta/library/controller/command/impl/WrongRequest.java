@@ -4,8 +4,10 @@ import com.epam.ta.library.controller.command.Command;
 
 public class WrongRequest implements Command{
 
+	private static final String WRONG_REQUEST = "Wrong request.";
+	
 	@Override
 	public String execute(String paramStr) {
-		return "Wrong request.";
+		return WRONG_REQUEST;
 	}
 }

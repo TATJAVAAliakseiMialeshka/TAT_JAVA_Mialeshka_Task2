@@ -14,6 +14,9 @@ import com.epam.ta.library.service.factory.ServiceFactory;
 
 public class SeeAllBooks implements Command {
 
+	private static final String LOAD_BOOKS_SUCCESS = "Library books list successfully loaded.";
+	private static final String LOAD_BOOKS_FAILED_ = "Error during loading book list operation.";
+	
 	private final static Logger log = Logger.getLogger(SeeAllBooks.class);
 
 	private List<Book> bookList;
@@ -37,7 +40,7 @@ public class SeeAllBooks implements Command {
 		try {
 			bookList = userService.seeAllBooks();
 			if (null != bookList) {
-				responce = "Library books list successfully loaded.";
+				responce = LOAD_BOOKS_SUCCESS;
 				session.setLibraryBooks(bookList);
 				CommandPrintUtil.printBookList(bookList);
 			} 
@@ -45,7 +48,7 @@ public class SeeAllBooks implements Command {
 		
 		} catch (ServiceException e) {
 			log.error(e);
-			responce = "Error during loading book list operation.";
+			responce = LOAD_BOOKS_FAILED_;
 		}
 
 		return responce;

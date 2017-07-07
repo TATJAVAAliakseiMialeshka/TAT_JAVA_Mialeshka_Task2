@@ -12,6 +12,10 @@ import com.epam.ta.library.service.factory.ServiceFactory;
 
 public class AddBookDescription implements Command {
 
+	private static final String ADD_DESCR_SUCCESS = "Book description successfully added.";
+	private static final String ADD_DESCR_FAILED_WRONG_FORMAT = "Book description operation failed due to wrong arguments format.";
+	private static final String ADD_DESCR_FAILED = "Error during adding book description.";
+	
 	private final static Logger log = Logger.getLogger(AddBookDescription.class);
 
 	@Override
@@ -34,21 +38,21 @@ public class AddBookDescription implements Command {
 					Book book = CommandUtil.buildBook(bName, bYear, bDescr, bQuantity);
 
 					if (adminService.addBook(book)) {
-						responce = "Book description successfully added.";
+						responce = ADD_DESCR_SUCCESS;
 					}
 				} else {
-					responce = "Book description operation failed due to wrong arguments format.";
+					responce = ADD_DESCR_FAILED_WRONG_FORMAT;
 				}
 			} else {
-				responce = "Book description operation failed due to wrong arguments format.";
+				responce = ADD_DESCR_FAILED_WRONG_FORMAT;
 			}
 
 		} catch (NumberFormatException e) {
 			log.error(e);
-			responce = "Book description operation failed due to wrong arguments format.";
+			responce = ADD_DESCR_FAILED_WRONG_FORMAT;
 		} catch (ServiceException e) {
 			log.error(e);
-			responce = "Error during adding book description.";
+			responce = ADD_DESCR_FAILED;
 		}
 		return responce;
 	}

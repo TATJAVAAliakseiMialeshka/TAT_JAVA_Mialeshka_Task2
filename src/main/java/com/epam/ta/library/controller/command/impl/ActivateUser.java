@@ -10,6 +10,11 @@ import com.epam.ta.library.service.factory.ServiceFactory;
 
 public class ActivateUser implements Command {
 
+	private static final String ACTIVATION_SUCCESS = "User successfully activated.";
+	private static final String ACT_FAILED_WRONG_CREDENTIALS = "User activation operation failed. Wrong crdentials.";
+	private static final String ACT_FAILED = "User activation operation failed.";
+	private static final String ACT_FAILED_WRONG_FORMAT = "User activation operation failed due to wrong arguments format.";
+
 	private final static Logger log = Logger.getLogger(ActivateUser.class);
 
 	@Override
@@ -24,21 +29,21 @@ public class ActivateUser implements Command {
 				Integer userId = Integer.parseInt(paramArr[0]);
 
 				if (userId > 0 && adminService.activateUser(userId)) {
-					responce = "User successfully activated.";
+					responce = ACTIVATION_SUCCESS;
 				} else {
-					responce = "User activation operation failed. Wrong crdentials.";
+					responce = ACT_FAILED_WRONG_CREDENTIALS;
 
 				}
 			} else {
-				responce = "User activation operation failed due to wrong arguments format.";
+				responce = ACT_FAILED_WRONG_FORMAT;
 			}
 
 		} catch (NumberFormatException e) {
 			log.error(e);
-			responce = "User activation operation failed. Wrong crdentials.";
+			responce = ACT_FAILED_WRONG_CREDENTIALS;
 		} catch (ServiceException e) {
 			log.error(e);
-			responce = "User activation operation failed.";
+			responce = ACT_FAILED;
 		}
 
 		return responce;

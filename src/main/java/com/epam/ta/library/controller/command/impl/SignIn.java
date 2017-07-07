@@ -13,6 +13,9 @@ import com.epam.ta.library.service.factory.ServiceFactory;
 
 public class SignIn implements Command {
 
+	private static final String LOGIN_FAILED_WRONG_CREDENT = "Login operation failed. Wrong credentials";
+	private static final String LOGIN_FAILED = "Error during login procedure.";
+	
 	private final static Logger log = Logger.getLogger(SignIn.class);
 
 	private User user;
@@ -45,17 +48,17 @@ public class SignIn implements Command {
 						session.setSessionUser(user);
 						responce = "Welcome " + user.getName();
 					} else {
-						responce = "Login operation failed. Wrong credentials";
+						responce = LOGIN_FAILED_WRONG_CREDENT;
 					}
 				} else {
-					responce = "Login operation failed. Wrong credentials";
+					responce = LOGIN_FAILED_WRONG_CREDENT;
 				}
 			} else {
-				responce = "Login operation failed. Wrong credentials";
+				responce = LOGIN_FAILED_WRONG_CREDENT;
 			}
 		} catch (ServiceException e) {
 			log.error(e);
-			responce = "Error during login procedure.";
+			responce = LOGIN_FAILED;
 		}
 
 		return responce;

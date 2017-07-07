@@ -7,9 +7,6 @@ package com.epam.ta.library.exception;
  */
 public abstract class AbstractAppException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1312792027988562008L;
 
 	/**
@@ -29,7 +26,6 @@ public abstract class AbstractAppException extends Exception {
 	 */
 	public AbstractAppException(String message, Throwable innerEx) {
 		super(message, innerEx);
-		/* Initializes the cause of this exception to the specified value */
 		initCause(innerEx);
 	}
 

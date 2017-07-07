@@ -7,7 +7,8 @@ public class Controller {
 
 	private Controller() {
 	}
-
+	
+	private static final String WRONG_ARG_FORMAT = "Requested operation failed due to wrong arguments format.";
 	private static Controller instance;
 
 	private final CommandProvider provider = new CommandProvider();
@@ -22,7 +23,7 @@ public class Controller {
 	public String executeTask(String commandName, String commandValue) {
 
 		Command command = null;
-		String response = "Requested operation failed due to wrong arguments format.";
+		String response = WRONG_ARG_FORMAT;
 		if (null != commandName && !commandName.isEmpty()) {
 
 			command = provider.getCommand(commandName);

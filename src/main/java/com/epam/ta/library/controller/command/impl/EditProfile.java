@@ -11,6 +11,11 @@ import com.epam.ta.library.service.factory.ServiceFactory;
 
 public class EditProfile implements Command {
 
+	private static final String USER_PROF_UPD_SUCCESS = "User profile successfully updated.";
+	private static final String USER_PROF_UPD_FAILED_WRONG_FORMAT = "User profile update operation failed due to wrong arguments format.";
+	private static final String USER_PROF_UPD_FAILED_WRONG_CREDENT = "User profile update operation failed. Wrong credentials.";
+	private static final String USER_PROF_UPD_FAILED = "Error during updating user profile.";
+
 	private final static Logger log = Logger.getLogger(EditProfile.class);
 
 	@Override
@@ -30,23 +35,23 @@ public class EditProfile implements Command {
 						&& CommUserParamValidator.validatePassword(userPassword)
 						&& CommUserParamValidator.validatePassword(userOldPassword)) {
 					if (userService.updateUserProfile(userId, userName, userPassword, userOldPassword)) {
-						responce = "User profile successfully updated.";
+						responce = USER_PROF_UPD_SUCCESS;
 					} else {
-						responce = "User profile update operation failed. Wrong credentials.";
+						responce = USER_PROF_UPD_FAILED_WRONG_CREDENT;
 					}
 				} else {
-					responce = "User profile update operation failed due to wrong arguments format.";
+					responce = USER_PROF_UPD_FAILED_WRONG_FORMAT;
 				}
 			} else {
-				responce = "User profile update operation failed due to wrong arguments format.";
+				responce = USER_PROF_UPD_FAILED_WRONG_FORMAT;
 			}
 
 		} catch (NumberFormatException e) {
 			log.error(e);
-			responce = "User profile update operation failed due to wrong arguments format.";
+			responce = USER_PROF_UPD_FAILED_WRONG_FORMAT;
 		} catch (ServiceException e) {
 			log.error(e);
-			responce = "Error during updating user profile.";
+			responce = USER_PROF_UPD_FAILED;
 		}
 
 		return responce;

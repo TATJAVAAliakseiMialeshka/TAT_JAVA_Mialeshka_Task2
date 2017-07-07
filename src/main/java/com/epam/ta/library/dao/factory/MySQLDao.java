@@ -11,28 +11,26 @@ import com.epam.ta.library.dao.impl.MySQLLoginDao;
 import com.epam.ta.library.dao.impl.MySQLSuperadminDao;
 import com.epam.ta.library.dao.impl.MySQLUserDao;
 
-
 public class MySQLDao extends DaoFactory {
-	
-	
+
 	private static MySQLDao instance = null;
-	
-	private MySQLDao(){
+
+	private MySQLDao() {
 		super();
 	}
-	
-	public static MySQLDao getInstance(){
-		if (instance == null){
+
+	public static MySQLDao getInstance() {
+		if (instance == null) {
 			instance = new MySQLDao();
 		}
 		return instance;
 	}
-	
-	public static Connection createConnection() throws DaoException  {
+
+	public static Connection createConnection() throws DaoException {
 		MySQLConnection mySQLConn = MySQLConnection.getInstance();
 		return mySQLConn.getConnection();
 	}
-	
+
 	@Override
 	public MySQLUserDao getUserDao() {
 		return MySQLUserDao.getInstance();
@@ -57,6 +55,5 @@ public class MySQLDao extends DaoFactory {
 	public BookDao getBookDao() {
 		return MySQLBookDao.getInstance();
 	}
-	
 
 }

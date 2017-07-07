@@ -10,6 +10,11 @@ import com.epam.ta.library.service.factory.ServiceFactory;
 
 public class DisableBook implements Command {
 
+	private static final String DISABLE_BOOK_SUCCESS = "Book successfully disabled for ordering.";
+	private static final String DISABLE_BOOK_FAILED_WRONG_FORMAT = "Book disable operation failed due to wrong arguments format.";
+	private static final String DISABLE_BOOK_FAILED_NO_SUCH_BOOK = "Book disable operation failed. Probably there is no such book.";
+	private static final String DISABLE_BOOK_FAILED = "Error during disable book for ordering.";
+	
 	private final static Logger log = Logger.getLogger(DisableBook.class);
 
 	@Override
@@ -24,20 +29,20 @@ public class DisableBook implements Command {
 			if (null != paramArr && paramArr.length == 1) {
 				Integer bookId = Integer.parseInt(paramArr[0]);
 				if (bookId > 0 && adminService.disableBook(bookId)) {
-					responce = "Book successfully disabled for ordering.";
+					responce = DISABLE_BOOK_SUCCESS;
 				} else {
-					responce = "Book disable operation failed. Probably there is no such book.";
+					responce = DISABLE_BOOK_FAILED_NO_SUCH_BOOK;
 				}
 			} else {
-				responce = "Book disable operation failed due to wrong arguments format.";
+				responce = DISABLE_BOOK_FAILED_WRONG_FORMAT;
 			}
 
 		} catch (NumberFormatException e) {
 			log.error(e);
-			responce = "Book disable operation failed due to wrong arguments format.";
+			responce = DISABLE_BOOK_FAILED_WRONG_FORMAT;
 		} catch (ServiceException e) {
 			log.error(e);
-			responce = "Error during disable book for ordering.";
+			responce = DISABLE_BOOK_FAILED;
 		}
 
 		return responce;

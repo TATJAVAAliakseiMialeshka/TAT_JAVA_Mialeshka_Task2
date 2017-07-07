@@ -12,6 +12,11 @@ import com.epam.ta.library.service.factory.ServiceFactory;
 
 public class EditBookInfo implements Command {
 
+	private static final String EDIT_BOOK_SUCCESS = "Book description successfully updated.";
+	private static final String EDIT_BOOK_FAILED_WRONG_FORMAT = "Book description update operation failed due to wrong arguments format.";
+	private static final String EDIT_BOOK_FAILED_NO_SUCH_BOOK = "Book description update operation failed. Maybe there is no such book.";
+	private static final String EDIT_BOOK_FAILED = "Error during disable book for ordering.";
+	
 	private final static Logger log = Logger.getLogger(EditBookInfo.class);
 
 	@Override
@@ -34,23 +39,23 @@ public class EditBookInfo implements Command {
 					Book book = CommandUtil.buildBook(bId, bName, bYear, bDescr, bQuantity);
 
 					if (adminService.updateBook(book)) {
-						responce = "Book description successfully updated.";
+						responce = EDIT_BOOK_SUCCESS;
 					} else {
-						responce = "Book description update operation failed. Maybe there is no such book.";
+						responce = EDIT_BOOK_FAILED_NO_SUCH_BOOK;
 					}
 				} else {
-					responce = "Book description update operation failed due to wrong arguments format.";
+					responce = EDIT_BOOK_FAILED_WRONG_FORMAT;
 				}
 			} else {
-				responce = "Book description update operation failed due to wrong arguments format.";
+				responce = EDIT_BOOK_FAILED_WRONG_FORMAT;
 			}
 
 		} catch (NumberFormatException e) {
 			log.error(e);
-			responce = "Book description update operation failed due to wrong arguments format.";
+			responce = EDIT_BOOK_FAILED_WRONG_FORMAT;
 		} catch (ServiceException e) {
 			log.error(e);
-			responce = "Error during update book description operation.";
+			responce = EDIT_BOOK_FAILED;
 		}
 		return responce;
 	}

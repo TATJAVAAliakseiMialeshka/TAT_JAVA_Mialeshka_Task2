@@ -16,22 +16,26 @@ import com.epam.ta.library.dao.factory.MySQLDao;
 
 public class MySQLBookDao implements BookDao{
 
-	private static MySQLBookDao instance;
 	
 	private final static String SQL_GET_ALL_BOOKS = "select b.b_id, b.b_name, b.b_year, b.b_description, b.b_is_available, GROUP_CONCAT(a.a_name) from books b join books_has_authors using(b_id) join authors a using(a_id) group by b.b_name;";
+	private final static String SQL_CHANGE_BOOK_STATUS_TO_NOT_AVAILABLE = "update books set b_is_available = 'N' where b_id=?";
+	private final static String SQL_UPDATE_BOOK_DESCR = "update books set b_name=?, b_year=?, b_description=?, b_quantity=? where b_id=?";
+	private final static String SQL_ADD_BOOK_DESCR = "insert into books (b_name, b_year, b_description, b_quantity, b_is_available) values (?,?,?,?,(case when b_quantity>0 then 'Y' else  'N' end))";
+	private final static String SQL_ADD_BOOK_AUTHORS = "insert into authors (a_name) values (?)";
+	private final static String SQL_FILL_BOOK_AUTHORS_FOREIGN_KEYS = "insert into books_has_authors values (?,?)";
+	private final static String SQL_UPDATE_USER_STATUS = "update users set u_status = ? where u_id = ?";
 	
 	private static final String ERROR_DB_OPERATION_FAILED = "Database operation failed.";
 	private static final String ERROR_SLOSING_CONNECTION = "Failed to close database connection.";
 	
-	private final static String SQL_CHANGE_BOOK_STATUS_TO_NOT_AVAILABLE = "update books set b_is_available = 'N' where b_id=?";
-	
 	private final static int ZERO_AFFECTED_ROWS = 0;
 	
+	private static MySQLBookDao instance;
+
 	private MySQLBookDao() {
 		super();
-
 	}
-
+	
 	public static MySQLBookDao getInstance() {
 		if (instance == null) {
 			instance = new MySQLBookDao();
@@ -94,7 +98,7 @@ public class MySQLBookDao implements BookDao{
 		
 		try {
 			conn = MySQLDao.createConnection();
-			stm = conn.prepareStatement("update books set b_name=?, b_year=?, b_description=?, b_quantity=? where b_id=?");
+			stm = conn.prepareStatement(SQL_UPDATE_BOOK_DESCR);
 			stm.setString(1, book.getName());
 			stm.setInt(2, book.getYear());
 			stm.setString(3, book.getDescription());
@@ -163,7 +167,7 @@ public class MySQLBookDao implements BookDao{
 		
 		try {
 			conn = MySQLDao.createConnection();
-			bookStm = conn.prepareStatement("insert into books (b_name, b_year, b_description, b_quantity, b_is_available) values (?,?,?,?,(case when b_quantity>0 then 'Y' else  'N' end))", Statement.RETURN_GENERATED_KEYS);
+			bookStm = conn.prepareStatement(SQL_ADD_BOOK_DESCR, Statement.RETURN_GENERATED_KEYS);
 			bookStm.setString(1, book.getName());
 			bookStm.setInt(2, book.getYear());
 			bookStm.setString(3, book.getDescription());
@@ -178,18 +182,15 @@ public class MySQLBookDao implements BookDao{
 			
 			if(null!= book.getAuthorList()){
 			for(String author: book.getAuthorList()){
-				authorStm = conn.prepareStatement("insert into authors (a_name) values (?)", Statement.RETURN_GENERATED_KEYS);
+				authorStm = conn.prepareStatement(SQL_ADD_BOOK_AUTHORS, Statement.RETURN_GENERATED_KEYS);
 				authorStm.setString(1, author);
 
-				System.out.println("authors" +authorStm.executeUpdate());
-				
-				
 				rs = authorStm.getGeneratedKeys();
 				if (rs.next()) {
 					authorId = rs.getInt(1);
 				}
 
-				bookAuthorStm = conn.prepareStatement("insert into books_has_authors values (?,?)");
+				bookAuthorStm = conn.prepareStatement(SQL_FILL_BOOK_AUTHORS_FOREIGN_KEYS);
 				bookAuthorStm.setInt(1, bookId);
 				bookAuthorStm.setInt(2, authorId);
 				
@@ -226,7 +227,7 @@ public class MySQLBookDao implements BookDao{
 
 		try {
 			conn = MySQLDao.createConnection();
-			stm = conn.prepareStatement("update users set u_status = ? where u_id = ?");
+			stm = conn.prepareStatement(SQL_UPDATE_USER_STATUS);
 			
 			stm.setString(1, status);
 			stm.setInt(2, bookId);

@@ -13,13 +13,17 @@ import com.epam.ta.library.dao.factory.MySQLDao;
 public class MySQLLoginDao implements LoginDao{
 
 	private static MySQLLoginDao instance = null;
-	
-	private static final String ERROR_DB_OPERATION_FAILED = "Database operation failed.";
-	private static final String ERROR_CLOSING_CONNECTION = "Failed to close database connection.";
 
 	private final static String SQL_UPDATE_USERNAME = "update users set u_name=? where u_id=? and u_status != 'B'";
 	private final static String SQL_UPDATE_PASSWORD= "update users set u_password=? where u_id=? and u_status != 'B'";
-
+	private final static String SQL_ADD_USER= "insert into users (u_name, u_password) values(?,?)";
+	private final static String SQL_SELECT_USER_BY_NAME_PASS = "select u_id, u_name, u_status from users where u_name=? and u_password=?";
+	private final static String SQL_SELECT_USER_BY_ID = "select u_id, u_name, u_status from users where u_id=?";
+	private final static String SQL_SELECT_USER_BY_LOGIN = "select u_id from users where u_login = ?";
+	
+	private static final String ERROR_DB_OPERATION_FAILED = "Database operation failed.";
+	private static final String ERROR_CLOSING_CONNECTION = "Failed to close database connection.";
+	
 	private final static int ZERO_AFFECTED_ROWS = 0;
 
 	private MySQLLoginDao() {
@@ -41,7 +45,7 @@ public class MySQLLoginDao implements LoginDao{
 		if (!checkUserExists(name)) {
 			try {
 				conn = MySQLDao.createConnection();
-				stm = conn.prepareStatement("insert into users (u_name, u_password) values(?,?)");
+				stm = conn.prepareStatement(SQL_ADD_USER);
 				stm.setString(1, name);
 				stm.setString(2, password);
 
@@ -74,7 +78,7 @@ public class MySQLLoginDao implements LoginDao{
 		ResultSet rs = null;
 		try {
 			conn = MySQLDao.createConnection();
-			stm = conn.prepareStatement("select u_id, u_name, u_status from users where u_name=? and u_password=?");
+			stm = conn.prepareStatement(SQL_SELECT_USER_BY_NAME_PASS);
 			stm.setString(1, name);
 			stm.setString(2, password);
 			rs = stm.executeQuery();
@@ -109,7 +113,7 @@ public class MySQLLoginDao implements LoginDao{
 		ResultSet rs = null;
 		try {
 			conn = MySQLDao.createConnection();
-			stm = conn.prepareStatement("select u_id, u_name, u_status from users where u_id=?");
+			stm = conn.prepareStatement(SQL_SELECT_USER_BY_ID);
 			stm.setInt(1, id);
 			rs = stm.executeQuery();
 			if (rs.next()) {
@@ -142,7 +146,7 @@ public class MySQLLoginDao implements LoginDao{
 		PreparedStatement stm = null;
 		try {
 			conn = MySQLDao.createConnection();
-			stm = conn.prepareStatement("select u_id from users where u_login = ?");
+			stm = conn.prepareStatement(SQL_SELECT_USER_BY_LOGIN);
 			stm.setString(1, name);
 			
 			if(stm.executeUpdate()>ZERO_AFFECTED_ROWS){

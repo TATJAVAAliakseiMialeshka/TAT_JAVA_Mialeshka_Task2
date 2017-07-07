@@ -16,27 +16,27 @@ import com.epam.ta.library.dao.util.UserUtil;
 
 public class MySQLUserDao implements UserDao {
 
-	private static MySQLUserDao instance = null;
+
 
 
 	private final static String SQL_ORDER_BOOK = "INSERT INTO subscriptions (u_id, b_id) values(?,?)";
 	private final static String SQL_UPDATE_BOOK_QUANTITY_DECREASE_AND_STATUS = "UPDATE books b set b.b_is_available = case when b.b_quantity = 1 then 'N' else b.b_is_available end , b.b_quantity=b.b_quantity-1 where b.b_id = ? and b.b_is_available='Y'";
-
-	private static final String ERROR_DB_OPERATION_FAILED = "Database operation failed.";// "error.db.search.failer";
-	private static final String ERROR_CLOSING_CONNECTION = "Failed to close database connection.";
-
 	private final static String SQL_REFUSE_ORDERED_BOOK = "DELETE FROM subscriptions where u_id = ? and b_id = ? and sb_status = 'P'";
 	private final static String SQL_UPDATE_BOOK_QUANTITY_INCREASE_AND_STATUS = "UPDATE books b set b.b_is_available = case when b.b_quantity = 0 then 'Y' else b.b_is_available end , b.b_quantity=b.b_quantity+1 where b.b_id = ?";
+	private final static String SQL_GET_SUBSCRIPTION = "select b.b_name, sb.sb_start, sb.sb_finish from users u join subscriptions sb using (u_id) join books b using (b_id) where u.u_id=? and sb.sb_status != 'P';";
+	private final static String SQL_UPDATE_USER = "update users set u_name=?, u_password=? where u_id=? and u_password=?";
+	private final static String SQL_GET_USER_BY_ID = "select * from users where u_id = ?";
+	
+	
+	private static final String ERROR_DB_OPERATION_FAILED = "Database operation failed.";
+	private static final String ERROR_CLOSING_CONNECTION = "Failed to close database connection.";
 	
 	private final static int ZERO_AFFECTED_ROWS = 0;
 	
-	private final static String SQL_GET_SUBSCRIPTION = "select b.b_name, sb.sb_start, sb.sb_finish from users u join subscriptions sb using (u_id) join books b using (b_id) where u.u_id=? and sb.sb_status != 'P';";
-
-	private final static String SQL_UPDATE_USER = "update users set u_name=?, u_password=? where u_id=? and u_password=?";
-
+	private static MySQLUserDao instance = null;
+	
 	private MySQLUserDao() {
 		super();
-
 	}
 
 	public static MySQLUserDao getInstance() {
@@ -45,8 +45,6 @@ public class MySQLUserDao implements UserDao {
 		}
 		return instance;
 	}
-
-
 
 	@Override
 	public List<Subscription> viewHistoryCard(int userId) throws DaoException {
@@ -187,7 +185,7 @@ public class MySQLUserDao implements UserDao {
 		ResultSet rs = null;
 		try {
 			conn = MySQLDao.createConnection();
-			stm = conn.prepareStatement("select * from users where u_id = ?");
+			stm = conn.prepareStatement(SQL_GET_USER_BY_ID);
 			stm.setInt(1, userId);
 			rs = stm.executeQuery();
 			user = UserUtil.buildUser(rs);

@@ -4,9 +4,11 @@ import com.epam.ta.library.controller.command.Command;
 
 public class AccessDenied implements Command{
 
+	private static final String ACCESS_DENIED = "You has no permission for this operation.";
+	
 	@Override
 	public String execute(String paramStr) {
-		return "You has no permission for this operation.";
+		return ACCESS_DENIED;
 	}
 
 }

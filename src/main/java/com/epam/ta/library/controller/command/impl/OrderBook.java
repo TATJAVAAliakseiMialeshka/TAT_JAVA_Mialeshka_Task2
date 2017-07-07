@@ -10,6 +10,11 @@ import com.epam.ta.library.service.factory.ServiceFactory;
 
 public class OrderBook  implements Command{
 
+	private static final String ORDER_BOOK_SUCCESS = "Order for book successfully placed. Please, wait for your order approval.";
+	private static final String ORDER_BOOK_FAILED_WRONG_FORMAT = "Order book operation failed due to wrong arguments format.";
+	private static final String ORDER_BOOK_FAILED_NO_SUCH_BOOK = "Order for book cannot be placed. Book cannot be found or not available.";
+	private static final String ORDER_BOOK_FAILED = "Error during placing order for book.";
+	
 	private final static Logger log = Logger.getLogger(OrderBook.class);
 
 	@Override
@@ -25,20 +30,20 @@ public class OrderBook  implements Command{
 				Integer userId = Integer.parseInt(paramArr[0]);
 				Integer bookId = Integer.parseInt(paramArr[1]);
 				if (userService.orderBook(userId, bookId)) {
-					responce = "Order for book successfully placed. Please, wait for your order approval.";
+					responce = ORDER_BOOK_SUCCESS;
 				} else {
-					responce = "Order for book cannot be placed. Book cannot be found or not available.";
+					responce = ORDER_BOOK_FAILED_NO_SUCH_BOOK;
 				}
 			} else {
-				responce = "Order book operation failed due to wrong arguments format.";
+				responce = ORDER_BOOK_FAILED_WRONG_FORMAT;
 			}
 
 		} catch (NumberFormatException e) {
 			log.error(e);
-			responce = "Order book operation failed due to wrong arguments format.";
+			responce = ORDER_BOOK_FAILED_WRONG_FORMAT;
 		} catch (ServiceException e) {
 			log.error(e);
-			responce = "Error during placing order for book.";
+			responce = ORDER_BOOK_FAILED;
 		}
 
 		return responce;

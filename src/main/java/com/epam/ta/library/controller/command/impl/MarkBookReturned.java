@@ -10,6 +10,11 @@ import com.epam.ta.library.service.factory.ServiceFactory;
 
 public class MarkBookReturned implements Command {
 
+	private static final String BOOK_RETURN_SUCCESS = "User subscription for this book marked as finished. Library book fund successfully updated.";
+	private static final String BOOK_RETURN_FAILED_WRONG_FORMAT = "User subscription close operation failed due to wrong arguments format.";
+	private static final String BOOK_RETURN_FAILED_NO_SUCH_SUBSRIPTION = "User subscription for this book failed. Probably there is no such subscription.";
+	private static final String BOOK_RETURN_FAILED = "Error during close user subscription operation.";
+	
 	private final static Logger log = Logger.getLogger(MarkBookReturned.class);
 
 	@Override
@@ -25,20 +30,20 @@ public class MarkBookReturned implements Command {
 				Integer userId = Integer.parseInt(paramArr[0]);
 				Integer bookId = Integer.parseInt(paramArr[1]);
 				if (adminService.receiveBookBack(userId, bookId)) {
-					responce = "User subscription for this book marked as finished. Library book fund successfully updated.";
+					responce = BOOK_RETURN_SUCCESS;
 				} else {
-					responce = "User subscription for this book failed. Probably there is no such subscription.";
+					responce = BOOK_RETURN_FAILED_NO_SUCH_SUBSRIPTION;
 				}
 			} else {
-				responce = "User subscription close operation failed due to wrong arguments format.";
+				responce = BOOK_RETURN_FAILED_WRONG_FORMAT;
 			}
 
 		} catch (NumberFormatException e) {
 			log.error(e);
-			responce = "User subscription close operation failed due to wrong arguments format.";
+			responce = BOOK_RETURN_FAILED_WRONG_FORMAT;
 		} catch (ServiceException e) {
 			log.error(e);
-			responce = "Error during close user subscription operation.";
+			responce = BOOK_RETURN_FAILED;
 		}
 
 		return responce;

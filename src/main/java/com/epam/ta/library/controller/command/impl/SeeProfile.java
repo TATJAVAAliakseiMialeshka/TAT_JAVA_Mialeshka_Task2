@@ -11,6 +11,11 @@ import com.epam.ta.library.service.factory.ServiceFactory;
 
 public class SeeProfile implements Command {
 
+	private static final String LOAD_PROFILE_SUCCESS = "User profile successfully loaded.";
+	private static final String LOAD_PROFILE_FAILED_WRONG_FORMAT = "User profile loading operation failed due to wrong arguments format.";
+	private static final String LOAD_PROFILE_FAILED_NO_SUCH_USER = "Error during user profile loading operation. Probably there is no such user.";
+	private static final String LOAD_PROFILE_FAILED = "Error during loading user profile operation.";
+	
 	private final static Logger log = Logger.getLogger(SeeProfile.class);
 
 	private User user;
@@ -36,20 +41,20 @@ public class SeeProfile implements Command {
 
 				user = userService.seeUserProfile(userId);
 				if (null != user) {
-					responce = "User profile successfully loaded.";
+					responce = LOAD_PROFILE_SUCCESS;
 				} else {
-					responce = "Error during user profile loading operation. Probably there is no such user.";
+					responce = LOAD_PROFILE_FAILED_NO_SUCH_USER;
 				}
 			} else {
-				responce = "User profile loading operation failed due to wrong arguments format.";
+				responce = LOAD_PROFILE_FAILED_WRONG_FORMAT;
 			}
 
 		} catch (NumberFormatException e) {
 			log.error(e);
-			responce = "User profile loading operation failed due to wrong arguments format.";
+			responce = LOAD_PROFILE_FAILED_WRONG_FORMAT;
 		} catch (ServiceException e) {
 			log.error(e);
-			responce = "Error during loading user profile operation.";
+			responce = LOAD_PROFILE_FAILED;
 		}
 
 		return responce;

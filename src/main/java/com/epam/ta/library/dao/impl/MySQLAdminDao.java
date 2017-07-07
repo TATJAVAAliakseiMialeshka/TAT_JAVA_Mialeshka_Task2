@@ -18,18 +18,19 @@ import com.epam.ta.library.dao.factory.MySQLDao;
 
 public class MySQLAdminDao implements AdminDao {
 
+
 	private static final String SQL_GET_BOOK_SUBSCRIPTIONS = "select * from subscriptions where b_id=?";
-	private static final String ERROR_DB_OPERATION_FAILED = "Database operation failed.";
-	private static final String ERROR_SLOSING_CONNECTION = "Failed to close database connection.";
-
-	
 	private static final String SQL_ACTIVATE_SUBSCRIPTION = "update subscriptions sb set sb.sb_start = ?, sb.sb_finish = ?, sb.sb_status = 'S' where sb.u_id=?";
-
-	
+	private static final String SQL_ADD_USER_ROLE = "insert into users_has_role values(?,(select r_id from role where r_authority=?))";
+	private static final String SQL_DELETE_USER_ROLE = "delete from users_has_role where u_id=? and r_id=(select r_id from role where r_authority=?)";
+	private static final String SQL_END_SUBSCR = "update subscriptions sb set sb.sb_finish = ?, sb.sb_status = 'E' where sb.u_id=? and sb.b_id=?";
+	private static final String SQL_UPDATE_USER_STATUS = "update users set u_status = ? where u_id = ?";
 	private final static String SQL_UPDATE_BOOK_QUANTITY_INCREASE_AND_STATUS = "UPDATE books b set b.b_is_available = case when b.b_quantity = 0 then 'Y' else b.b_is_available end , b.b_quantity=b.b_quantity+1 where b.b_id = ?";
 
+	private static final String ERROR_DB_OPERATION_FAILED = "Database operation failed.";
+	private static final String ERROR_SLOSING_CONNECTION = "Failed to close database connection.";
+	
 	private final static int ZERO_AFFECTED_ROWS = 0;
-
 	private static final int SUBSCRIPTION_TIME = 30;
 	
 	private static MySQLAdminDao instance = null;
@@ -104,7 +105,7 @@ public class MySQLAdminDao implements AdminDao {
 
 		try {
 			conn = MySQLDao.createConnection();
-			stm = conn.prepareStatement("insert into users_has_role values(?,(select r_id from role where r_authority=?))");
+			stm = conn.prepareStatement(SQL_ADD_USER_ROLE);
 			stm.setInt(1, userId);
 			stm.setString(2, authority);
 			
@@ -135,7 +136,7 @@ public class MySQLAdminDao implements AdminDao {
 
 		try {
 			conn = MySQLDao.createConnection();
-			stm = conn.prepareStatement("delete from users_has_role where u_id=? and r_id=(select r_id from role where r_authority=?)");
+			stm = conn.prepareStatement(SQL_DELETE_USER_ROLE);
 			stm.setInt(1, userId);
 			stm.setString(2, authority);
 			
@@ -203,7 +204,7 @@ public class MySQLAdminDao implements AdminDao {
 		try {
 			conn = MySQLDao.createConnection();
 			conn.setAutoCommit(false);
-			subscriptionStm = conn.prepareStatement("update subscriptions sb set sb.sb_finish = ?, sb.sb_status = 'E' where sb.u_id=? and sb.b_id=?",
+			subscriptionStm = conn.prepareStatement(SQL_END_SUBSCR,
 					ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
 			Calendar currentTime = Calendar.getInstance();	
@@ -251,7 +252,7 @@ public class MySQLAdminDao implements AdminDao {
 
 		try {
 			conn = MySQLDao.createConnection();
-			stm = conn.prepareStatement("update users set u_status = ? where u_id = ?");
+			stm = conn.prepareStatement(SQL_UPDATE_USER_STATUS);
 			
 			stm.setString(1, status);
 			stm.setInt(2, userId);
