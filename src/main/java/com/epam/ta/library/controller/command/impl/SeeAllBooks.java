@@ -12,24 +12,13 @@ import com.epam.ta.library.service.UserService;
 import com.epam.ta.library.service.exception.ServiceException;
 import com.epam.ta.library.service.factory.ServiceFactory;
 
-public class SeeAllBooks implements Command {
+public final class SeeAllBooks implements Command {
 
 	private static final String LOAD_BOOKS_SUCCESS = "Library books list successfully loaded.";
 	private static final String LOAD_BOOKS_FAILED_ = "Error during loading book list operation.";
 	
 	private final static Logger log = Logger.getLogger(SeeAllBooks.class);
 
-	private List<Book> bookList;
-
-	public List<Book> getBookList() {
-		return bookList;
-	}
-
-	public void setBookList(List<Book> bookList) {
-		if (null != bookList) {
-			this.bookList = bookList;
-		}
-	}
 
 	@Override
 	public String execute(String paramStr) {
@@ -38,7 +27,7 @@ public class SeeAllBooks implements Command {
 		UserService userService = serviceFactory.getUserService();
 		SessionStorage session = SessionStorage.getInstance();
 		try {
-			bookList = userService.seeAllBooks();
+			List<Book> bookList = userService.seeAllBooks();
 			if (null != bookList) {
 				responce = LOAD_BOOKS_SUCCESS;
 				session.setLibraryBooks(bookList);

@@ -5,11 +5,12 @@ import org.apache.log4j.Logger;
 import com.epam.ta.library.controller.command.Command;
 import com.epam.ta.library.controller.command.impl.util.CommUserParamValidator;
 import com.epam.ta.library.controller.command.impl.util.CommandUtil;
+import com.epam.ta.library.controller.session.SessionStorage;
 import com.epam.ta.library.service.LoginService;
 import com.epam.ta.library.service.exception.ServiceException;
 import com.epam.ta.library.service.factory.ServiceFactory;
 
-public class Register implements Command {
+public final class Register implements Command {
 
 	private static final String REGISTRATION_SUCCESS = "You have successfully registered. Login to continue...";
 	private static final String REGISTRATION_FAILED_WRONG_FORMAT = "Registration operation failed due to wrong argumets format.";
@@ -33,6 +34,8 @@ public class Register implements Command {
 				String password = paramArr[1];
 				if (CommUserParamValidator.validateLogin(name) && CommUserParamValidator.validatePassword(password)) {
 					if (loginService.registerUser(name, password)) {
+						SessionStorage session = SessionStorage.getInstance();
+						session.emptyStorage();
 						responce = REGISTRATION_SUCCESS;
 					} else {
 						responce = REGISTRATION_FAILED_USER_EXISTS;

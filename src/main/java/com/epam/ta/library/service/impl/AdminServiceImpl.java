@@ -14,7 +14,7 @@ import com.epam.ta.library.service.AdminService;
 import com.epam.ta.library.service.exception.ServiceException;
 import com.epam.ta.library.service.util.ServiceUtil;
 
-public class AdminServiceImpl implements AdminService {
+public final class AdminServiceImpl implements AdminService {
 
 	private static final String NULL_PARAMETER = "Received null parameter";
 	private DaoFactory factory;

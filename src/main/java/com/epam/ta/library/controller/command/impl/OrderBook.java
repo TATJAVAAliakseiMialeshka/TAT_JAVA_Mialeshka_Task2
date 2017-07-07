@@ -8,7 +8,7 @@ import com.epam.ta.library.service.UserService;
 import com.epam.ta.library.service.exception.ServiceException;
 import com.epam.ta.library.service.factory.ServiceFactory;
 
-public class OrderBook  implements Command{
+public final class OrderBook  implements Command{
 
 	private static final String ORDER_BOOK_SUCCESS = "Order for book successfully placed. Please, wait for your order approval.";
 	private static final String ORDER_BOOK_FAILED_WRONG_FORMAT = "Order book operation failed due to wrong arguments format.";

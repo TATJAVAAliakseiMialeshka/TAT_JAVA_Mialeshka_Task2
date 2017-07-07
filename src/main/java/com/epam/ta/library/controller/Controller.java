@@ -1,5 +1,7 @@
 package com.epam.ta.library.controller;
 
+import org.apache.log4j.Logger;
+
 import com.epam.ta.library.controller.command.Command;
 import com.epam.ta.library.controller.command.CommandProvider;
 
@@ -10,7 +12,7 @@ public class Controller {
 	
 	private static final String WRONG_ARG_FORMAT = "Requested operation failed due to wrong arguments format.";
 	private static Controller instance;
-
+	private final static Logger log = Logger.getLogger(Controller.class);
 	private final CommandProvider provider = new CommandProvider();
 
 	public static Controller getInstance() {
@@ -30,7 +32,7 @@ public class Controller {
 
 			response = command.execute(commandValue);
 		}
-
+		log.info(response);
 		return response;
 	}
 }

@@ -3,7 +3,6 @@ package com.epam.ta.library.dao.factory;
 import com.epam.ta.library.dao.AdminDao;
 import com.epam.ta.library.dao.BookDao;
 import com.epam.ta.library.dao.LoginDao;
-import com.epam.ta.library.dao.SuperadminDao;
 import com.epam.ta.library.dao.UserDao;
 
 /**
@@ -37,14 +36,6 @@ public abstract class DaoFactory {
 	 * @return <code>AdminDao</code> 
 	 */
 	public abstract AdminDao getAdminDao();
-	
-	/**
-	 * get <code>SuperadminDao</code> 
-	 * must be realized by 
-	 * concrete generator
-	 * @return <code>SuperadminDao</code> 
-	 */
-	public abstract SuperadminDao getSuperadminDao();
 		
 	/**
 	 * get <code>BookDao</code> 

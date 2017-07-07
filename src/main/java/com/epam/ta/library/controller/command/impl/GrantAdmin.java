@@ -8,7 +8,7 @@ import com.epam.ta.library.service.AdminService;
 import com.epam.ta.library.service.exception.ServiceException;
 import com.epam.ta.library.service.factory.ServiceFactory;
 
-public class GrantAdmin implements Command {
+public final class GrantAdmin implements Command {
 
 	private static final String GRANT_ADMIN_SUCCESS = "Admin role successfully granted for selected user.";
 	private static final String GRANT_ADMIN_FAILED_WRONG_FORMAT = "Add admin role operation failed due to wrong arguments format.";

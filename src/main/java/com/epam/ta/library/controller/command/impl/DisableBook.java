@@ -8,7 +8,7 @@ import com.epam.ta.library.service.AdminService;
 import com.epam.ta.library.service.exception.ServiceException;
 import com.epam.ta.library.service.factory.ServiceFactory;
 
-public class DisableBook implements Command {
+public final class DisableBook implements Command {
 
 	private static final String DISABLE_BOOK_SUCCESS = "Book successfully disabled for ordering.";
 	private static final String DISABLE_BOOK_FAILED_WRONG_FORMAT = "Book disable operation failed due to wrong arguments format.";

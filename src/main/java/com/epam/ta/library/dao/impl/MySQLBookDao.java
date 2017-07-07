@@ -14,7 +14,7 @@ import com.epam.ta.library.dao.BookDao;
 import com.epam.ta.library.dao.exception.DaoException;
 import com.epam.ta.library.dao.factory.MySQLDao;
 
-public class MySQLBookDao implements BookDao{
+public final class MySQLBookDao implements BookDao{
 
 	
 	private final static String SQL_GET_ALL_BOOKS = "select b.b_id, b.b_name, b.b_year, b.b_description, b.b_is_available, GROUP_CONCAT(a.a_name) from books b join books_has_authors using(b_id) join authors a using(a_id) group by b.b_name;";
@@ -27,7 +27,8 @@ public class MySQLBookDao implements BookDao{
 	
 	private static final String ERROR_DB_OPERATION_FAILED = "Database operation failed.";
 	private static final String ERROR_SLOSING_CONNECTION = "Failed to close database connection.";
-	
+	private static final String ERROR_ROLLBACK = "Error during collection rollback";
+
 	private final static int ZERO_AFFECTED_ROWS = 0;
 	
 	private static MySQLBookDao instance;
@@ -167,6 +168,7 @@ public class MySQLBookDao implements BookDao{
 		
 		try {
 			conn = MySQLDao.createConnection();
+			conn.setAutoCommit(false);
 			bookStm = conn.prepareStatement(SQL_ADD_BOOK_DESCR, Statement.RETURN_GENERATED_KEYS);
 			bookStm.setString(1, book.getName());
 			bookStm.setInt(2, book.getYear());
@@ -200,11 +202,16 @@ public class MySQLBookDao implements BookDao{
 			}
 			
 			if(affectedRows>ZERO_AFFECTED_ROWS){
-				//conn.commit();
+				conn.commit();
 				return true;
 			}
 
 		} catch (SQLException ex) {
+			try {
+				conn.rollback();
+			} catch (SQLException e) {
+				throw new DaoException(ERROR_ROLLBACK, ex);
+			}
 			throw new DaoException(ERROR_DB_OPERATION_FAILED, ex);
 
 		} finally {

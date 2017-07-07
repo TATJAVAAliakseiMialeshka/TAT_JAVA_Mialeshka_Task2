@@ -9,7 +9,7 @@ import com.epam.ta.library.service.UserService;
 import com.epam.ta.library.service.exception.ServiceException;
 import com.epam.ta.library.service.factory.ServiceFactory;
 
-public class SeeProfile implements Command {
+public final class SeeProfile implements Command {
 
 	private static final String LOAD_PROFILE_SUCCESS = "User profile successfully loaded.";
 	private static final String LOAD_PROFILE_FAILED_WRONG_FORMAT = "User profile loading operation failed due to wrong arguments format.";
@@ -18,16 +18,7 @@ public class SeeProfile implements Command {
 	
 	private final static Logger log = Logger.getLogger(SeeProfile.class);
 
-	private User user;
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
+	
 	@Override
 	public String execute(String paramStr) {
 		String responce = null;
@@ -39,7 +30,7 @@ public class SeeProfile implements Command {
 			if (null != paramArr && paramArr.length == 1) {
 				Integer userId = Integer.parseInt(paramArr[0]);
 
-				user = userService.seeUserProfile(userId);
+				User user = userService.seeUserProfile(userId);
 				if (null != user) {
 					responce = LOAD_PROFILE_SUCCESS;
 				} else {

@@ -8,7 +8,7 @@ import com.epam.ta.library.service.AdminService;
 import com.epam.ta.library.service.exception.ServiceException;
 import com.epam.ta.library.service.factory.ServiceFactory;
 
-public class MarkBookReturned implements Command {
+public final class MarkBookReturned implements Command {
 
 	private static final String BOOK_RETURN_SUCCESS = "User subscription for this book marked as finished. Library book fund successfully updated.";
 	private static final String BOOK_RETURN_FAILED_WRONG_FORMAT = "User subscription close operation failed due to wrong arguments format.";

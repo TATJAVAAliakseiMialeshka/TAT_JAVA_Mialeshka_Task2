@@ -10,7 +10,7 @@ import com.epam.ta.library.service.AdminService;
 import com.epam.ta.library.service.exception.ServiceException;
 import com.epam.ta.library.service.factory.ServiceFactory;
 
-public class EditBookInfo implements Command {
+public final class EditBookInfo implements Command {
 
 	private static final String EDIT_BOOK_SUCCESS = "Book description successfully updated.";
 	private static final String EDIT_BOOK_FAILED_WRONG_FORMAT = "Book description update operation failed due to wrong arguments format.";

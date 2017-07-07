@@ -8,7 +8,7 @@ import com.epam.ta.library.service.AdminService;
 import com.epam.ta.library.service.exception.ServiceException;
 import com.epam.ta.library.service.factory.ServiceFactory;
 
-public class ActivateUser implements Command {
+public final class ActivateUser implements Command {
 
 	private static final String ACTIVATION_SUCCESS = "User successfully activated.";
 	private static final String ACT_FAILED_WRONG_CREDENTIALS = "User activation operation failed. Wrong crdentials.";

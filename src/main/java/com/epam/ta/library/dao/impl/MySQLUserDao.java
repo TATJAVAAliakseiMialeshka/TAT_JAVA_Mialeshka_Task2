@@ -14,10 +14,7 @@ import com.epam.ta.library.dao.exception.DaoException;
 import com.epam.ta.library.dao.factory.MySQLDao;
 import com.epam.ta.library.dao.util.UserUtil;
 
-public class MySQLUserDao implements UserDao {
-
-
-
+public final class MySQLUserDao implements UserDao {
 
 	private final static String SQL_ORDER_BOOK = "INSERT INTO subscriptions (u_id, b_id) values(?,?)";
 	private final static String SQL_UPDATE_BOOK_QUANTITY_DECREASE_AND_STATUS = "UPDATE books b set b.b_is_available = case when b.b_quantity = 1 then 'N' else b.b_is_available end , b.b_quantity=b.b_quantity-1 where b.b_id = ? and b.b_is_available='Y'";
@@ -26,15 +23,16 @@ public class MySQLUserDao implements UserDao {
 	private final static String SQL_GET_SUBSCRIPTION = "select b.b_name, sb.sb_start, sb.sb_finish from users u join subscriptions sb using (u_id) join books b using (b_id) where u.u_id=? and sb.sb_status != 'P';";
 	private final static String SQL_UPDATE_USER = "update users set u_name=?, u_password=? where u_id=? and u_password=?";
 	private final static String SQL_GET_USER_BY_ID = "select * from users where u_id = ?";
-	
-	
+
 	private static final String ERROR_DB_OPERATION_FAILED = "Database operation failed.";
 	private static final String ERROR_CLOSING_CONNECTION = "Failed to close database connection.";
+	private static final String ERROR_ROLLBACK = "Error during collection rollback";
+	private static final String ERROR_USER_NOT_FOUND = "User not found.";
 	
 	private final static int ZERO_AFFECTED_ROWS = 0;
-	
+
 	private static MySQLUserDao instance = null;
-	
+
 	private MySQLUserDao() {
 		super();
 	}
@@ -57,10 +55,11 @@ public class MySQLUserDao implements UserDao {
 			conn = MySQLDao.createConnection();
 			stm = conn.prepareStatement(SQL_GET_SUBSCRIPTION);
 			stm.setInt(1, userId);
-			
+
 			rs = stm.executeQuery();
-			
+
 			subscriptions = new ArrayList<>();
+			
 			while (rs.next()) {
 				Subscription subscription = new Subscription();
 				subscription.setBookName(rs.getString(1));
@@ -85,7 +84,6 @@ public class MySQLUserDao implements UserDao {
 		}
 		return subscriptions;
 	}
-	
 
 	@Override
 	public boolean orderBook(int userId, int bookId) throws DaoException {
@@ -116,8 +114,12 @@ public class MySQLUserDao implements UserDao {
 			}
 
 		} catch (SQLException ex) {
+			try {
+				conn.rollback();
+			} catch (SQLException e) {
+				throw new DaoException(ERROR_ROLLBACK, ex);
+			}
 			throw new DaoException(ERROR_DB_OPERATION_FAILED, ex);
-
 		} finally {
 			if (stmOrderBook != null || stmAndDecreaseBooksCount != null || conn != null) {
 				try {
@@ -154,13 +156,18 @@ public class MySQLUserDao implements UserDao {
 
 			int[] affectedSubscriptionRows = stmRefuseOrderedBook.executeBatch();
 			int[] affectedBookRows = stmAndIncreaseBooksCount.executeBatch();
-			System.out.println(affectedSubscriptionRows.length +" "+ affectedBookRows.length);
-			System.out.println(affectedSubscriptionRows[0] + " "+ affectedBookRows[0]);
+			System.out.println(affectedSubscriptionRows.length + " " + affectedBookRows.length);
+			System.out.println(affectedSubscriptionRows[0] + " " + affectedBookRows[0]);
 			if (affectedBookRows[0] > ZERO_AFFECTED_ROWS && affectedSubscriptionRows[0] > ZERO_AFFECTED_ROWS) {
 				conn.commit();
 			}
 
 		} catch (SQLException ex) {
+			try {
+				conn.rollback();
+			} catch (SQLException e) {
+				throw new DaoException(ERROR_ROLLBACK, ex);
+			}
 			throw new DaoException(ERROR_DB_OPERATION_FAILED, ex);
 
 		} finally {
@@ -188,8 +195,11 @@ public class MySQLUserDao implements UserDao {
 			stm = conn.prepareStatement(SQL_GET_USER_BY_ID);
 			stm.setInt(1, userId);
 			rs = stm.executeQuery();
-			user = UserUtil.buildUser(rs);
-
+			if (rs.next()) {
+				user = UserUtil.buildUser(rs);
+			} else {
+				throw new DaoException(ERROR_USER_NOT_FOUND);
+			}
 		} catch (SQLException ex) {
 			throw new DaoException(ERROR_DB_OPERATION_FAILED, ex);
 
@@ -217,7 +227,7 @@ public class MySQLUserDao implements UserDao {
 			stm.setString(2, password);
 			stm.setInt(3, userId);
 			stm.setString(4, oldPassword);
-			if(stm.executeUpdate()>ZERO_AFFECTED_ROWS){
+			if (stm.executeUpdate() > ZERO_AFFECTED_ROWS) {
 				return true;
 			}
 

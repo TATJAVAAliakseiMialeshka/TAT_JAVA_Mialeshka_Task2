@@ -16,10 +16,10 @@ import com.epam.ta.library.dao.AdminDao;
 import com.epam.ta.library.dao.exception.DaoException;
 import com.epam.ta.library.dao.factory.MySQLDao;
 
-public class MySQLAdminDao implements AdminDao {
+public final class MySQLAdminDao implements AdminDao {
 
 
-	private static final String SQL_GET_BOOK_SUBSCRIPTIONS = "select * from subscriptions where b_id=?";
+	private static final String SQL_GET_BOOK_SUBSCRIPTIONS = "select sb_id, u_id, b_id, sb_start, sb_finish, sb_status from subscriptions where b_id=?";
 	private static final String SQL_ACTIVATE_SUBSCRIPTION = "update subscriptions sb set sb.sb_start = ?, sb.sb_finish = ?, sb.sb_status = 'S' where sb.u_id=?";
 	private static final String SQL_ADD_USER_ROLE = "insert into users_has_role values(?,(select r_id from role where r_authority=?))";
 	private static final String SQL_DELETE_USER_ROLE = "delete from users_has_role where u_id=? and r_id=(select r_id from role where r_authority=?)";
@@ -28,7 +28,8 @@ public class MySQLAdminDao implements AdminDao {
 	private final static String SQL_UPDATE_BOOK_QUANTITY_INCREASE_AND_STATUS = "UPDATE books b set b.b_is_available = case when b.b_quantity = 0 then 'Y' else b.b_is_available end , b.b_quantity=b.b_quantity+1 where b.b_id = ?";
 
 	private static final String ERROR_DB_OPERATION_FAILED = "Database operation failed.";
-	private static final String ERROR_SLOSING_CONNECTION = "Failed to close database connection.";
+	private static final String ERROR_СLOSING_CONNECTION = "Failed to close database connection.";
+	private static final String ERROR_ROLLBACK = "Error during collection rollback";
 	
 	private final static int ZERO_AFFECTED_ROWS = 0;
 	private static final int SUBSCRIPTION_TIME = 30;
@@ -84,7 +85,7 @@ public class MySQLAdminDao implements AdminDao {
 						stm.close();
 						conn.close();
 					} catch (SQLException ex) {
-						throw new DaoException(ERROR_SLOSING_CONNECTION, ex);
+						throw new DaoException(ERROR_СLOSING_CONNECTION, ex);
 					}
 				}
 			}
@@ -122,7 +123,7 @@ public class MySQLAdminDao implements AdminDao {
 					stm.close();
 					conn.close();
 				} catch (SQLException ex) {
-					throw new DaoException(ERROR_SLOSING_CONNECTION, ex);
+					throw new DaoException(ERROR_СLOSING_CONNECTION, ex);
 				}
 			}
 		}
@@ -153,7 +154,7 @@ public class MySQLAdminDao implements AdminDao {
 					stm.close();
 					conn.close();
 				} catch (SQLException ex) {
-					throw new DaoException(ERROR_SLOSING_CONNECTION, ex);
+					throw new DaoException(ERROR_СLOSING_CONNECTION, ex);
 				}
 			}
 		}
@@ -188,7 +189,7 @@ public class MySQLAdminDao implements AdminDao {
 					stm.close();
 					conn.close();
 				} catch (SQLException ex) {
-					throw new DaoException(ERROR_SLOSING_CONNECTION, ex);
+					throw new DaoException(ERROR_СLOSING_CONNECTION, ex);
 				}
 			}
 		}
@@ -228,6 +229,11 @@ public class MySQLAdminDao implements AdminDao {
 			}
 
 		} catch (SQLException ex) {
+			try {
+				conn.rollback();
+			} catch (SQLException e) {
+				throw new DaoException(ERROR_ROLLBACK, ex);
+			}
 			throw new DaoException(ERROR_DB_OPERATION_FAILED, ex);
 
 		} finally {
@@ -236,7 +242,7 @@ public class MySQLAdminDao implements AdminDao {
 					subscriptionStm.close();
 					conn.close();
 				} catch (SQLException ex) {
-					throw new DaoException(ERROR_SLOSING_CONNECTION, ex);
+					throw new DaoException(ERROR_СLOSING_CONNECTION, ex);
 				}
 			}
 		}
@@ -270,7 +276,7 @@ public class MySQLAdminDao implements AdminDao {
 					stm.close();
 					conn.close();
 				} catch (SQLException ex) {
-					throw new DaoException(ERROR_SLOSING_CONNECTION, ex);
+					throw new DaoException(ERROR_СLOSING_CONNECTION, ex);
 				}
 			}
 		}

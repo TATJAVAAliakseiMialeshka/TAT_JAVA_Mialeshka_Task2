@@ -10,7 +10,7 @@ import com.epam.ta.library.service.exception.ServiceException;
 import com.epam.ta.library.service.util.Encryptor;
 import com.epam.ta.library.service.util.ServiceUtil;
 
-public class LoginServiceImpl implements LoginService {
+public final class LoginServiceImpl implements LoginService {
 
 	private static final String NULL_PARAMETER = "Received null parameter";
 	private DaoFactory factory;

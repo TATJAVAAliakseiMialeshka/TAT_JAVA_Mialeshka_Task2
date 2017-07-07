@@ -9,7 +9,7 @@ import com.epam.ta.library.service.SuperadminService;
 import com.epam.ta.library.service.exception.ServiceException;
 import com.epam.ta.library.service.util.ServiceUtil;
 
-public class SuperadminServiceImpl implements SuperadminService {
+public final class SuperadminServiceImpl implements SuperadminService {
 
 	private static final String NULL_PARAMETER = "Received null parameter";
 	private DaoFactory factory;

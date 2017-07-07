@@ -8,7 +8,6 @@ import com.epam.ta.library.dao.exception.DaoException;
 import com.epam.ta.library.dao.impl.MySQLAdminDao;
 import com.epam.ta.library.dao.impl.MySQLBookDao;
 import com.epam.ta.library.dao.impl.MySQLLoginDao;
-import com.epam.ta.library.dao.impl.MySQLSuperadminDao;
 import com.epam.ta.library.dao.impl.MySQLUserDao;
 
 public class MySQLDao extends DaoFactory {
@@ -44,11 +43,6 @@ public class MySQLDao extends DaoFactory {
 	@Override
 	public MySQLAdminDao getAdminDao() {
 		return MySQLAdminDao.getInstance();
-	}
-
-	@Override
-	public MySQLSuperadminDao getSuperadminDao() {
-		return MySQLSuperadminDao.getInstance();
 	}
 
 	@Override

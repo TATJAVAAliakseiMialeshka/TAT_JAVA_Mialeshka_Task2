@@ -8,7 +8,7 @@ import com.epam.ta.library.service.SuperadminService;
 import com.epam.ta.library.service.exception.ServiceException;
 import com.epam.ta.library.service.factory.ServiceFactory;
 
-public class RemoveAdmin  implements Command{
+public final class RemoveAdmin  implements Command{
 
 	private static final String REMOVE_ADMIN_SUCCESS = "Admin role successfully disabled for selected user.";
 	private static final String REMOVE_ADMIN_FAILED_WRONG_FORMAT = "Admin role disable operation failed due to wrong arguments format.";

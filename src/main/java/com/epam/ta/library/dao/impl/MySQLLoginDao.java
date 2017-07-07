@@ -10,7 +10,7 @@ import com.epam.ta.library.dao.LoginDao;
 import com.epam.ta.library.dao.exception.DaoException;
 import com.epam.ta.library.dao.factory.MySQLDao;
 
-public class MySQLLoginDao implements LoginDao{
+public final class MySQLLoginDao implements LoginDao{
 
 	private static MySQLLoginDao instance = null;
 
@@ -23,6 +23,7 @@ public class MySQLLoginDao implements LoginDao{
 	
 	private static final String ERROR_DB_OPERATION_FAILED = "Database operation failed.";
 	private static final String ERROR_CLOSING_CONNECTION = "Failed to close database connection.";
+	private static final String ERROR_USER_NOT_FOUND = "User not found.";
 	
 	private final static int ZERO_AFFECTED_ROWS = 0;
 
@@ -82,11 +83,14 @@ public class MySQLLoginDao implements LoginDao{
 			stm.setString(1, name);
 			stm.setString(2, password);
 			rs = stm.executeQuery();
+			
 			if (rs.next()) {
 				user = new User();
 				user.setId(rs.getInt(1));
 				user.setName(rs.getString(2));
 				user.setStatus(rs.getString(3));
+			} else {
+				throw new DaoException(ERROR_USER_NOT_FOUND);
 			}
 
 		} catch (SQLException ex) {
@@ -121,6 +125,8 @@ public class MySQLLoginDao implements LoginDao{
 				user.setId(rs.getInt(1));
 				user.setName(rs.getString(2));
 				user.setStatus(rs.getString(3));
+			} else {
+				throw new DaoException(ERROR_USER_NOT_FOUND);
 			}
 
 		} catch (SQLException ex) {

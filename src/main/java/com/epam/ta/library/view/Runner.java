@@ -1,6 +1,7 @@
 package com.epam.ta.library.view;
 
 import org.apache.log4j.Logger;
+
 import com.epam.ta.library.view.exception.ViewException;
 
 public class Runner {
@@ -12,15 +13,14 @@ public class Runner {
 	public static void main(String args[]) {
 		
 		Performer performer = null;
-		
+		args = null;
 		try {
 			performer = new Performer(args);
 			performer.perform();
 
 		} catch (ViewException e) {
-			log.error(e);
-			ConsolePrinter.printError(e.getMessage() + USAGE);
+			log.error(e.getMessage() + USAGE);
 		}
-		
+
 	}
 }

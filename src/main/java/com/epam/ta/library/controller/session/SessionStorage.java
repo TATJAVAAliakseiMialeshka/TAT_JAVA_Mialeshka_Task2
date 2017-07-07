@@ -16,7 +16,7 @@ public class SessionStorage {
 	
 	private User sessionUser;
 	
-
+	
 
 	private List<Book> libraryBooks; 
 
@@ -26,7 +26,7 @@ public class SessionStorage {
 		}
 		return instance;
 	}
-
+	
 	public User getSessionUser() {
 		return sessionUser;
 	}
@@ -41,6 +41,11 @@ public class SessionStorage {
 	}
 	public void setLibraryBooks(List<Book> libraryBooks) {
 		this.libraryBooks = libraryBooks;
+	}
+	
+	public void emptyStorage(){
+		sessionUser = null;
+		libraryBooks = null;
 	}
 	
 	public boolean checkPermission(CommandName commandName) {

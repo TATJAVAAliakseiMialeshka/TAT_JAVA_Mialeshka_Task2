@@ -8,20 +8,20 @@ import com.epam.ta.library.view.exception.ViewException;
 public class Performer {
 
 	private ParamExtractor extractror;
-	
+
 	private Map<String, String> commandMap;
-	
+
 	private Controller controller;
-	
+
 	public Performer(String params[]) {
 		super();
 		this.extractror = new ParamExtractor(params);
 	}
-	
-	public void perform() throws ViewException{
+
+	public void perform() throws ViewException {
 		commandMap = extractror.formCommandMap();
 		controller = Controller.getInstance();
-		for(Map.Entry<String, String> command: commandMap.entrySet()){
+		for (Map.Entry<String, String> command : commandMap.entrySet()) {
 			controller.executeTask(command.getKey(), command.getValue());
 		}
 	}

@@ -8,7 +8,7 @@ import com.epam.ta.library.service.UserService;
 import com.epam.ta.library.service.exception.ServiceException;
 import com.epam.ta.library.service.factory.ServiceFactory;
 
-public class RefuseBook  implements Command{
+public final class RefuseBook  implements Command{
 
 	private static final String REFUSE_BOOK_SUCCESS = "Order for book successfully canceled.";
 	private static final String REFUSE_BOOK_FAILED_WRONG_FORMAT = "Cancel book order operation failed due to wrong arguments format.";

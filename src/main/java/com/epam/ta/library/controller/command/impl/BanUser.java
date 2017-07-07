@@ -8,7 +8,7 @@ import com.epam.ta.library.service.AdminService;
 import com.epam.ta.library.service.exception.ServiceException;
 import com.epam.ta.library.service.factory.ServiceFactory;
 
-public class BanUser implements Command {
+public final class BanUser implements Command {
 
 	private static final String BAN_SUCCESS = "User successfully banned.";
 	private static final String BAN_FAILED_WRONG_FORMAT = "User ban operation failed  due to wrong arguments format.";
