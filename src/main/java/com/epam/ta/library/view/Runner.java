@@ -12,7 +12,7 @@ public class Runner {
 	public static void main(String args[]) {
 		
 		Performer performer = null;
-
+		
 		try {
 			performer = new Performer(args);
 			performer.perform();
@@ -21,6 +21,6 @@ public class Runner {
 			log.error(e);
 			ConsolePrinter.printError(e.getMessage() + USAGE);
 		}
-
+		
 	}
 }

@@ -19,7 +19,7 @@ public class MySQLLoginDao implements LoginDao{
 	private final static String SQL_ADD_USER= "insert into users (u_name, u_password) values(?,?)";
 	private final static String SQL_SELECT_USER_BY_NAME_PASS = "select u_id, u_name, u_status from users where u_name=? and u_password=?";
 	private final static String SQL_SELECT_USER_BY_ID = "select u_id, u_name, u_status from users where u_id=?";
-	private final static String SQL_SELECT_USER_BY_LOGIN = "select u_id from users where u_login = ?";
+	private final static String SQL_SELECT_USER_BY_LOGIN = "select u_id from users where u_name = ?";
 	
 	private static final String ERROR_DB_OPERATION_FAILED = "Database operation failed.";
 	private static final String ERROR_CLOSING_CONNECTION = "Failed to close database connection.";
@@ -144,12 +144,13 @@ public class MySQLLoginDao implements LoginDao{
 	public boolean checkUserExists(String name) throws DaoException {
 		Connection conn = null;
 		PreparedStatement stm = null;
+		ResultSet rs = null;
 		try {
 			conn = MySQLDao.createConnection();
 			stm = conn.prepareStatement(SQL_SELECT_USER_BY_LOGIN);
 			stm.setString(1, name);
-			
-			if(stm.executeUpdate()>ZERO_AFFECTED_ROWS){
+			rs = stm.executeQuery();
+			if(rs.next()){
 				return true;
 			}
 

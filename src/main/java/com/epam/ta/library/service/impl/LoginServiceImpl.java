@@ -7,6 +7,7 @@ import com.epam.ta.library.dao.factory.DBType;
 import com.epam.ta.library.dao.factory.DaoFactory;
 import com.epam.ta.library.service.LoginService;
 import com.epam.ta.library.service.exception.ServiceException;
+import com.epam.ta.library.service.util.Encryptor;
 import com.epam.ta.library.service.util.ServiceUtil;
 
 public class LoginServiceImpl implements LoginService {
@@ -24,7 +25,8 @@ public class LoginServiceImpl implements LoginService {
 			factory = DaoFactory.getDaoFactory(DBType.MYSQL);
 			if (null != factory) {
 				loginDao = factory.getLoginDao();
-				if (loginDao.createUser(name, password)) {
+				String encryptPass = Encryptor.encrypt(password);
+				if (loginDao.createUser(name, encryptPass)) {
 					return true;
 				}
 			}
@@ -44,7 +46,8 @@ public class LoginServiceImpl implements LoginService {
 			factory = DaoFactory.getDaoFactory(DBType.MYSQL);
 			if (null != factory) {
 				loginDao = factory.getLoginDao();
-				user = loginDao.getUserByNamePassword(name, password);
+				String encryptPass = Encryptor.encrypt(password);
+				user = loginDao.getUserByNamePassword(name, encryptPass);
 			}
 		} catch (DaoException e) {
 			throw new ServiceException(e);
