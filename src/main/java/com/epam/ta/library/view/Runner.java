@@ -13,7 +13,6 @@ public class Runner {
 	public static void main(String args[]) {
 		
 		Performer performer = null;
-		args = null;
 		try {
 			performer = new Performer(args);
 			performer.perform();
