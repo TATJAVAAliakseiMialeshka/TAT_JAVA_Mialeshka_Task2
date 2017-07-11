@@ -63,7 +63,6 @@ public final class MySQLBookDao implements BookDao{
 				book.setName(rs.getString(2));
 				book.setYear(rs.getInt(3));
 				book.setDescription(rs.getString(4));
-				//book.setQuantity(rs.getInt(5));
 				book.setIsAvailable(rs.getString(5));
 				
 				String authorsString = rs.getString(6);

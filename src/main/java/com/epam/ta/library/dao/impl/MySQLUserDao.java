@@ -194,7 +194,7 @@ public final class MySQLUserDao implements UserDao {
 			stm.setInt(1, userId);
 			rs = stm.executeQuery();
 			if (rs.next()) {
-				user = UserUtil.buildUser(rs);
+				user = UserUtil.buildUserWithRoles(rs);
 			} else {
 				throw new DaoException(ERROR_USER_NOT_FOUND);
 			}

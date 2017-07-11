@@ -11,7 +11,7 @@ public class ParamExtractor {
 
 	private static final String NO_ARGUMENTS = "Program was ran without arguments.";
 	private static final String WRONG_PARAMS_FORMAT = "Wrong params format.";
-	private static final String PARAMS_PATTERN = "[A-z]+=['A-z0-9_$%&*!#\\s]+";
+	private static final String PARAMS_PATTERN = "[A-z_]+=['A-z-\\d_$%&*!#\\s]+";
 	private String[] params;
 
 	public ParamExtractor(String[] params) {
