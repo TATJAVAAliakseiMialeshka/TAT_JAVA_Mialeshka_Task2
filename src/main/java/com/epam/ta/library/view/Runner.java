@@ -17,7 +17,7 @@ public class Runner {
 		try {
 			performer = new Performer(args);
 			performer.perform();
-
+			
 		} catch (ViewException e) {
 			log.error(e.getMessage() + USAGE);
 		}

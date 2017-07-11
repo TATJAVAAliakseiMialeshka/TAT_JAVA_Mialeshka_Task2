@@ -89,9 +89,7 @@ public final class MySQLLoginDao implements LoginDao{
 				user.setId(rs.getInt(1));
 				user.setName(rs.getString(2));
 				user.setStatus(rs.getString(3));
-			} else {
-				throw new DaoException(ERROR_USER_NOT_FOUND);
-			}
+			} 
 
 		} catch (SQLException ex) {
 			throw new DaoException(ERROR_DB_OPERATION_FAILED, ex);

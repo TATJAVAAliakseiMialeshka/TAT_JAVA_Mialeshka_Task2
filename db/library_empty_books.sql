@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `books` (
   `b_quantity` smallint(5) DEFAULT NULL,
   `b_is_available` enum('Y','N') DEFAULT 'Y',
   PRIMARY KEY (`b_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table library.books: ~20 rows (approximately)
 DELETE FROM `books`;
@@ -83,7 +83,9 @@ INSERT INTO `books` (`b_id`, `b_name`, `b_year`, `b_description`, `b_quantity`, 
 	(19, 'The Adventures of Sherlock Holmes', 1887, 'The Adventures of Sherlock Holmes is a collection of twelve short stories by Arthur Conan Doyle, featuring his fictional detective Sherlock Holmes. It was first published on 14 October 1892; the individual stories had been serialised in The Strand Magazine between June 1891 and July 1892. The stories are not in chronological order, and the only characters common to all twelve are Holmes and Dr. Watson. The stories are related in first-person narrative from Watson\'s point of view.', 5, 'Y'),
 	(20, '20,000 Leagues under the Sea', 1870, 'The title refers to the distance traveled while under the sea and not to a depth, as 20,000 leagues is over six times the diameter, and nearly twice the circumference of the Earth.[2] The greatest depth mentioned in the book is four leagues. The book uses metric leagues, which are four kilometres each.[3] A literal translation of the French title would end in the plural "seas", thus implying the "seven seas" through which the characters of the novel travel; however, the early English translations of the title used "sea", meaning the ocean in general.', 10, 'Y'),
 	(21, 'One Hundred Years of Solitude', 1967, 'One Hundred Years of Solitude is the story of seven generations of the Buendía Family in the town of Macondo. The founding patriarch of Macondo, José Arcadio Buendía, and Úrsula Iguarán, his wife (and first cousin), leave Riohacha, Colombia, to find a better life and a new home. One night of their emigration journey, while camping on a riverbank, José Arcadio Buendía dreams of "Macondo", a city of mirrors that reflected the world in and about it. Upon awakening, he decides to establish Macondo at the river side; after days of wandering the jungle, José Arcadio Buendía\'s founding of Macondo is utopic.', 0, 'Y'),
-	(22, 'Lolita', 1955, 'The novel is notable for its controversial subject: the protagonist and unreliable narrator—a middle-aged literature professor called Humbert Humbert—is obsessed with the 12-year-old Dolores Haze, with whom he becomes sexually involved after he becomes her stepfather. "Lolita" is his private nickname for Dolores.', 2, 'Y');
+	(22, 'Lolita', 1955, 'The novel is notable for its controversial subject: the protagonist and unreliable narrator—a middle-aged literature professor called Humbert Humbert—is obsessed with the 12-year-old Dolores Haze, with whom he becomes sexually involved after he becomes her stepfather. "Lolita" is his private nickname for Dolores.', 2, 'Y'),
+	(105, 'b_name', NULL, NULL, NULL, 'Y'),
+	(106, 'b_name2', NULL, NULL, NULL, 'Y');
 /*!40000 ALTER TABLE `books` ENABLE KEYS */;
 
 -- Dumping structure for table library.books_has_authors
@@ -109,6 +111,8 @@ INSERT INTO `books_has_authors` (`b_id`, `a_id`) VALUES
 	(5, 5),
 	(16, 5),
 	(7, 6),
+	(105, 6),
+	(106, 6),
 	(8, 7),
 	(9, 8),
 	(10, 9),
@@ -233,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `u_status` enum('G','R','A','B') DEFAULT 'R',
   PRIMARY KEY (`u_id`),
   UNIQUE KEY `u_name` (`u_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table library.users: ~10 rows (approximately)
 DELETE FROM `users`;

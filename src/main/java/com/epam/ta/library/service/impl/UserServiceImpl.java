@@ -13,6 +13,7 @@ import com.epam.ta.library.dao.factory.DBType;
 import com.epam.ta.library.dao.factory.DaoFactory;
 import com.epam.ta.library.service.UserService;
 import com.epam.ta.library.service.exception.ServiceException;
+import com.epam.ta.library.service.util.Encryptor;
 import com.epam.ta.library.service.util.ServiceUtil;
 
 public final class UserServiceImpl implements UserService {
@@ -122,6 +123,8 @@ public final class UserServiceImpl implements UserService {
 			factory = DaoFactory.getDaoFactory(DBType.MYSQL);
 			if (null != factory) {
 				userDao = factory.getUserDao();
+				password = Encryptor.encrypt(password);
+				oldPassword = Encryptor.encrypt(oldPassword); 
 				if (userDao.updateUser(userId, name, password, oldPassword)) {
 					return true;
 				}

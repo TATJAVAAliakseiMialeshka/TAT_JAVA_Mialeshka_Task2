@@ -156,8 +156,6 @@ public final class MySQLUserDao implements UserDao {
 
 			int[] affectedSubscriptionRows = stmRefuseOrderedBook.executeBatch();
 			int[] affectedBookRows = stmAndIncreaseBooksCount.executeBatch();
-			System.out.println(affectedSubscriptionRows.length + " " + affectedBookRows.length);
-			System.out.println(affectedSubscriptionRows[0] + " " + affectedBookRows[0]);
 			if (affectedBookRows[0] > ZERO_AFFECTED_ROWS && affectedSubscriptionRows[0] > ZERO_AFFECTED_ROWS) {
 				conn.commit();
 			}

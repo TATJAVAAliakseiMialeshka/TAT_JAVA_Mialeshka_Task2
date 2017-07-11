@@ -5,7 +5,14 @@
 	<test verbose="2" name="Default test">
 
 		<classes>
-			<class name="com.epam.ta.library.controller.ControllerTest"></class>
+			<class name="com.epam.ta.library.controller.ControllerTest"></class> 
+			<class name="com.epam.ta.library.controller.ControllerTestAddBookDescription"></class>
+			<class name="com.epam.ta.library.controller.ControllerTestActivateUser"></class>
+			<class name="com.epam.ta.library.controller.ControllerTestBanUser"></class>
+			<class name="com.epam.ta.library.controller.ControllerTestDisableBook"></class>
+			<class name="com.epam.ta.library.controller.ControllerTestEditBookInfo"></class>
+			<class name="com.epam.ta.library.controller.ControllerTestEditProfile"></class>
+			<class name="com.epam.ta.library.controller.ControllerTestSignIn"></class>
 		</classes>
 
 	</test>
