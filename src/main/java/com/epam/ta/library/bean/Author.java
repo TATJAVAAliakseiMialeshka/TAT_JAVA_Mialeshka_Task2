@@ -25,7 +25,8 @@ public class Author implements Serializable{
 	}
 
 	public void setId(Integer id) {
-		if (null != id) {
+		if (null != id) {// логическая ошибка в алгоритме,внимательно подумай над выполняемыми ждесь действиями
+			// нарисуй алгоритм, и не забывай даже не про ветку, а про случай Иначе
 			this.id = id;
 		}
 	}
