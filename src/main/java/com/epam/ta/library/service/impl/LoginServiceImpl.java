@@ -13,7 +13,10 @@ import com.epam.ta.library.service.util.ServiceUtil;
 public final class LoginServiceImpl implements LoginService {
 
 	private static final String NULL_PARAMETER = "Received null parameter";
-	private DaoFactory factory;
+	private DaoFactory factory;// ты допускаешь многовато логических ошибок в коде
+	// например с этими полями
+	// зачем ты их вынес в поля экземпляра класса и инициализируешь КАЖДЫЙ раз при вызове методов сервиса
+	// это же перебор
 	private LoginDao loginDao;
 
 	@Override
@@ -30,7 +33,7 @@ public final class LoginServiceImpl implements LoginService {
 					return true;
 				}
 			}
-			return false;
+			return false;// старайся изберать ретунов в трае, если их можно написать после блока
 		} catch (DaoException e) {
 			throw new ServiceException(e);
 		}
