@@ -80,11 +80,13 @@ public final class MySQLBookDao implements BookDao{
 		} finally {
 			if (rs != null || stm != null || conn != null) {
 				try {
-					rs.close();
+					rs.close();// эти ресурсы закрываются в разных Try-блоках
+					// иначе опять возможна логическя ошибка выполнения кода
 					stm.close();
 					conn.close();
 				} catch (SQLException ex) {
-					throw new DaoException(ERROR_SLOSING_CONNECTION, ex);
+					throw new DaoException(ERROR_SLOSING_CONNECTION, ex);// строки в логах и при генерации исключений не именуются
+					// это исключения))
 				}
 			}
 		}
